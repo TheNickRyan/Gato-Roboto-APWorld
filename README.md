@@ -10,7 +10,7 @@ A bite-sized metroidvania platformer gets the Archipelago treatment!
 
 - Gato Roboto: [Steam Store](https://store.steampowered.com/app/916730)
 - Archipelago: [Archipelago Releases Page](https://github.com/ArchipelagoMW/Archipelago/releases/latest)
-- APWorld: [Releases Page](https://github.com/AlexanderLeBlanc/Gato-Roboto-APWorld/releases/latest)
+- APWorld: [Releases Page](https://github.com/Ravenmist-Games/Gato-Roboto-APWorld/releases/latest)
 
 ## What does randomization do to this game?
 
