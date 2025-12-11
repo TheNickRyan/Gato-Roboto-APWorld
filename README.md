@@ -43,4 +43,4 @@ For any bug reports and/or feature requests, please create a related [Issue](htt
 
 ## Contributing
 
-Please take a look at our [guide](/docs/contributing.md) before making a contribution.
+Please take a look at our [guide](/gatoroboto/docs/contributing.md) before making a contribution.
