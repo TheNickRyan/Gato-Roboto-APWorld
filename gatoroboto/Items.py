@@ -24,16 +24,16 @@ modules_item_data_table: Dict[str, GatoRobotoItemData] = {
 }
 
 healthkits_item_data_table: Dict[str, GatoRobotoItemData] = {
-    ItemName.healthkit_landing_site_west: GatoRobotoItemData(gato_roboto_base_id + 16, ItemClassification.useful),
-    ItemName.healthkit_landing_site_east: GatoRobotoItemData(gato_roboto_base_id + 17, ItemClassification.useful),
-    ItemName.healthkit_nexus_west: GatoRobotoItemData(gato_roboto_base_id + 18, ItemClassification.useful),
-    ItemName.healthkit_nexus_east: GatoRobotoItemData(gato_roboto_base_id + 19, ItemClassification.useful),
-    ItemName.healthkit_aqueducts_west: GatoRobotoItemData(gato_roboto_base_id + 20, ItemClassification.useful),
-    ItemName.healthkit_aqueducts_east: GatoRobotoItemData(gato_roboto_base_id + 21, ItemClassification.useful),
-    ItemName.healthkit_heater_core_west: GatoRobotoItemData(gato_roboto_base_id + 22, ItemClassification.useful),
-    ItemName.healthkit_heater_core_east: GatoRobotoItemData(gato_roboto_base_id + 23, ItemClassification.useful),
-    ItemName.healthkit_ventilation: GatoRobotoItemData(gato_roboto_base_id + 24, ItemClassification.useful),
-    ItemName.healthkit_incubator: GatoRobotoItemData(gato_roboto_base_id + 25, ItemClassification.useful)
+    ItemName.healthkit_landing_site_west: GatoRobotoItemData(gato_roboto_base_id + 16),
+    ItemName.healthkit_landing_site_east: GatoRobotoItemData(gato_roboto_base_id + 17),
+    ItemName.healthkit_nexus_west: GatoRobotoItemData(gato_roboto_base_id + 18,),
+    ItemName.healthkit_nexus_east: GatoRobotoItemData(gato_roboto_base_id + 19),
+    ItemName.healthkit_aqueducts_west: GatoRobotoItemData(gato_roboto_base_id + 20),
+    ItemName.healthkit_aqueducts_east: GatoRobotoItemData(gato_roboto_base_id + 21),
+    ItemName.healthkit_heater_core_west: GatoRobotoItemData(gato_roboto_base_id + 22),
+    ItemName.healthkit_heater_core_east: GatoRobotoItemData(gato_roboto_base_id + 23),
+    ItemName.healthkit_ventilation: GatoRobotoItemData(gato_roboto_base_id + 24),
+    ItemName.healthkit_incubator: GatoRobotoItemData(gato_roboto_base_id + 25)
 }
 
 cartridges_item_data_table: Dict[str, GatoRobotoItemData] = {
@@ -72,7 +72,7 @@ vent_events_item_data_table: Dict[str, GatoRobotoItemData] = {
 }
 
 victory_item_data_table: Dict[str, GatoRobotoItemData] = {
-    ItemName.victory: GatoRobotoItemData(gato_roboto_base_id + 999, ItemClassification.progression)
+    ItemName.victory: GatoRobotoItemData(gato_roboto_base_id + 999, ItemClassification.progression_skip_balancing)
 }
 
 item_data_table: Dict[str, GatoRobotoItemData] = {

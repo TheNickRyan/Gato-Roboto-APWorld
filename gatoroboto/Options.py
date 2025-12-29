@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from Options import ItemsAccessibility
+
 ## Add deathlink later!!!
 from Options import Toggle, OptionGroup, PerGameCommonOptions
 
@@ -39,6 +41,7 @@ gatoroboto_option_groups = [
 
 @dataclass
 class GatoRobotoOptions(PerGameCommonOptions):
+    accessibility: ItemsAccessibility
     rocket_jumps: RocketJumps
     precise_tricks: PreciseTricks
     water_mech: WaterMech

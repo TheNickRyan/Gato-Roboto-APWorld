@@ -101,12 +101,12 @@ class GatoRobotoWorld(World):
                 for name in vent_events_item_data_table.keys()]
 
         #Place aqua 3 check if not rocket jumps to prevent softlock
-        if not self.options.rocket_jumps:
-            item_pool.remove(self.create_item(ItemName.progressive_aqueducts_3))
-            aqueducts_3 = self.get_location(LocationName.loc_progressive_aqueducts_3)
-            aqueducts_3.place_locked_item(GatoRobotoItem(ItemName.progressive_aqueducts_3,
-                                                         ItemClassification.progression,
-                                                         10239, self.player))
+        # if not self.options.rocket_jumps:
+        #     item_pool.remove(self.create_item(ItemName.progressive_aqueducts_3))
+        #     aqueducts_3 = self.get_location(LocationName.loc_progressive_aqueducts_3)
+        #     aqueducts_3.place_locked_item(GatoRobotoItem(ItemName.progressive_aqueducts_3,
+        #                                                  ItemClassification.progression,
+        #                                                  10239, self.player))
         
         #Place locked victory item & set completion condition
         victory_loc = self.get_location(LocationName.loc_victory)

@@ -1,2 +1,4 @@
 # ignore apworld
 gatoroboto.apworld
+/gatoroboto/__pycache__
+/gatoroboto/Names/__pycache__
