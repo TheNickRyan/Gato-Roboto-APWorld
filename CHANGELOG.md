@@ -1,5 +1,10 @@
 # Gato Roboto APWorld Changelog
 
+## v0.2.1
+
+## Bug Fixes
+- Fixed deprecated `@property` decorator causing client connection issues > Python 3.11.
+
 ## v0.2.0
 
 ### Features
