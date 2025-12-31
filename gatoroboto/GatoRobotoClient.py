@@ -25,7 +25,6 @@ checked_locations = list from server of locations youve checked
 
 class GatoRobotoPath:
     @classmethod
-    @property
     def steam_install(cls) -> list[str]:
         if is_linux:
             return [os.path.expanduser("~/.local/share/Steam/steamapps/common/Gato Roboto")] # running w/ proton
@@ -34,7 +33,6 @@ class GatoRobotoPath:
         return ["C:\\Program Files (x86)\\Steam\\steamapps\\common\\Gato Roboto", "C:\\Program Files\\Steam\\steamapps\\common\\Gato Roboto"]
 
     @classmethod
-    @property
     def save_game_folder(cls) -> str:
         if is_linux:
             return os.path.expanduser("~/.local/share/Steam/steamapps/compatdata/916730/pfx/drive_c/users/steamuser/AppData/Local/GatoRoboto") # running w/ proton
@@ -57,7 +55,7 @@ class GatoRobotoCommandProcessor(ClientCommandProcessor):
             
             #Validate file or set to default path
             if steam_install == "" or not os.path.exists(steam_install):
-                for possible_install_location in list(GatoRobotoPath.steam_install):
+                for possible_install_location in list(f"{GatoRobotoPath.steam_install()}"):
                     if os.path.exists(possible_install_location):
                         steam_install = possible_install_location
                         break
@@ -156,12 +154,12 @@ async def game_watcher(ctx: GatoRobotoContext):
             printed_connecting = True
         
         #read initial data for syncing items with the client
-        if not ctx.read_client_items and os.path.exists(f"{GatoRobotoPath.save_game_folder}/init.json"):
+        if not ctx.read_client_items and os.path.exists(f"{GatoRobotoPath.save_game_folder()}/init.json"):
             #print("Received Init")
             ctx.command_processor.print_log("Connected to Game")
             
             try:
-                with open(f"{GatoRobotoPath.save_game_folder}/init.json", 'r+') as f:
+                with open(f"{GatoRobotoPath.save_game_folder()}/init.json", 'r+') as f:
                     items_init: dict = get_clean_game_comms_file(f)
                     ctx.cur_client_items = []
                     
@@ -171,18 +169,18 @@ async def game_watcher(ctx: GatoRobotoContext):
                         
                 ctx.read_client_items = True
                         
-                os.remove(f"{GatoRobotoPath.save_game_folder}/init.json")
+                os.remove(f"{GatoRobotoPath.save_game_folder()}/init.json")
             except PermissionError:
                 print("⚠ File is locked by another program. Skipping read.")
                 await asyncio.sleep(0.3)
             
         #check if game disconnects
-        if os.path.exists(f"{GatoRobotoPath.save_game_folder}/off.json"):
+        if os.path.exists(f"{GatoRobotoPath.save_game_folder()}/off.json"):
             try:
                 #print("Received off")
                 ctx.command_processor.print_log("Lost Connection to Game")
                 ctx.command_processor.print_log("Waiting for Connection to Game")
-                os.remove(f"{GatoRobotoPath.save_game_folder}/off.json")
+                os.remove(f"{GatoRobotoPath.save_game_folder()}/off.json")
                 ctx.cur_client_items = []
                 ctx.read_client_items = False
                 
@@ -193,13 +191,13 @@ async def game_watcher(ctx: GatoRobotoContext):
                 
                 item_in_json: str = json.dumps(json_out, indent=4)
                 
-                with open(f"{GatoRobotoPath.save_game_folder}/tmp_id.json", 'w') as f:
+                with open(f"{GatoRobotoPath.save_game_folder()}/tmp_id.json", 'w') as f:
                     f.write(item_in_json)
             
-                if os.path.exists(f"{GatoRobotoPath.save_game_folder}/gameid.json"):
-                    os.remove(f"{GatoRobotoPath.save_game_folder}/gameid.json")
+                if os.path.exists(f"{GatoRobotoPath.save_game_folder()}/gameid.json"):
+                    os.remove(f"{GatoRobotoPath.save_game_folder()}/gameid.json")
             
-                os.rename(f"{GatoRobotoPath.save_game_folder}/tmp_id.json", f"{GatoRobotoPath.save_game_folder}/gameid.json")
+                os.rename(f"{GatoRobotoPath.save_game_folder()}/tmp_id.json", f"{GatoRobotoPath.save_game_folder()}/gameid.json")
             except PermissionError:
                 print("⚠ File is locked by another program, skipping read.")
                 await asyncio.sleep(0.3)
@@ -216,8 +214,8 @@ async def game_watcher(ctx: GatoRobotoContext):
         
         try:
             #if client has restarted, re-request init file
-            if flag and not ctx.read_client_items and not os.path.exists(f"{GatoRobotoPath.save_game_folder}/req_init.json"):
-                open(f"{GatoRobotoPath.save_game_folder}/req_init.json", "a").close()
+            if flag and not ctx.read_client_items and not os.path.exists(f"{GatoRobotoPath.save_game_folder()}/req_init.json"):
+                open(f"{GatoRobotoPath.save_game_folder()}/req_init.json", "a").close()
             #handle game restart via hard close or crash
             elif not flag and ctx.read_client_items:
                 ctx.command_processor.print_log("Lost Connection to Game")
@@ -225,8 +223,8 @@ async def game_watcher(ctx: GatoRobotoContext):
                 ctx.cur_client_items = []
                 ctx.read_client_items = False
                 
-                if os.path.exists(f"{GatoRobotoPath.save_game_folder}/gameid.json"):
-                    os.remove(f"{GatoRobotoPath.save_game_folder}/gameid.json")
+                if os.path.exists(f"{GatoRobotoPath.save_game_folder()}/gameid.json"):
+                    os.remove(f"{GatoRobotoPath.save_game_folder()}/gameid.json")
                 
                 json_out: dict = {
                     "game_id": ctx.game_id
@@ -234,19 +232,19 @@ async def game_watcher(ctx: GatoRobotoContext):
                 
                 item_in_json: str = json.dumps(json_out, indent=4)
                 
-                with open(f"{GatoRobotoPath.save_game_folder}/tmp_id.json", 'w') as f:
+                with open(f"{GatoRobotoPath.save_game_folder()}/tmp_id.json", 'w') as f:
                     f.write(item_in_json)
             
-                os.rename(f"{GatoRobotoPath.save_game_folder}/tmp_id.json", f"{GatoRobotoPath.save_game_folder}/gameid.json")
+                os.rename(f"{GatoRobotoPath.save_game_folder()}/tmp_id.json", f"{GatoRobotoPath.save_game_folder()}/gameid.json")
         except PermissionError:
             print("⚠ File is locked by another program, skipping read.")
             await asyncio.sleep(0.3)
         
         #watch for received locations from game
-        if os.path.exists(f"{GatoRobotoPath.save_game_folder}/locations.json"):  
+        if os.path.exists(f"{GatoRobotoPath.save_game_folder()}/locations.json"):
             print("Received Locations")
             try:
-                with open(f"{GatoRobotoPath.save_game_folder}/locations.json", "r+") as f:
+                with open(f"{GatoRobotoPath.save_game_folder()}/locations.json", "r+") as f:
                     locations_in: dict = get_clean_game_comms_file(f)
                     
                     sending: list[int] = []
@@ -260,7 +258,7 @@ async def game_watcher(ctx: GatoRobotoContext):
                     if len(sending) != 0:
                         await ctx.send_msgs([{"cmd": "LocationChecks", "locations": sending}])
                 
-                os.remove(f"{GatoRobotoPath.save_game_folder}/locations.json")
+                os.remove(f"{GatoRobotoPath.save_game_folder()}/locations.json")
             except PermissionError:
                 print("⚠ File is locked by another program, skipping read.")
                 await asyncio.sleep(0.3)
@@ -268,20 +266,20 @@ async def game_watcher(ctx: GatoRobotoContext):
                 print("⚠ Error in reading file, skipping read.")
         
         #check if wincon present
-        if os.path.exists(f"{GatoRobotoPath.save_game_folder}/victory.json") and not ctx.finished_game:
+        if os.path.exists(f"{GatoRobotoPath.save_game_folder()}/victory.json") and not ctx.finished_game:
             try:
                 #print("Received Victory")
                 await ctx.send_msgs([{"cmd": "StatusUpdate", "status": ClientStatus.CLIENT_GOAL}])
                     
-                os.remove(f"{GatoRobotoPath.save_game_folder}/victory.json")
+                os.remove(f"{GatoRobotoPath.save_game_folder()}/victory.json")
             except PermissionError:
                 print("⚠ File is locked by another program, skipping read.")
                 await asyncio.sleep(0.3)
             
-        if os.path.exists(f"{GatoRobotoPath.save_game_folder}/cur_region.json"):
+        if os.path.exists(f"{GatoRobotoPath.save_game_folder()}/cur_region.json"):
             try:
                 #print("New Region")
-                with open(f"{GatoRobotoPath.save_game_folder}/cur_region.json", "r+") as f:
+                with open(f"{GatoRobotoPath.save_game_folder()}/cur_region.json", "r+") as f:
                     locations_in: dict = get_clean_game_comms_file(f)
                     
                     await ctx.send_msgs([{"cmd": "Bounce", "slots": [ctx.slot],
@@ -291,7 +289,7 @@ async def game_watcher(ctx: GatoRobotoContext):
                         }
                     }])
                     
-                os.remove(f"{GatoRobotoPath.save_game_folder}/cur_region.json")
+                os.remove(f"{GatoRobotoPath.save_game_folder()}/cur_region.json")
             except PermissionError:
                 print("⚠ File is locked by another program, skipping read.")
                 await asyncio.sleep(0.3)
@@ -300,7 +298,7 @@ async def game_watcher(ctx: GatoRobotoContext):
         try:
             if (len(ctx.checks_to_consume) > 0 
                 and ctx.read_client_items 
-                and not os.path.exists(f"{GatoRobotoPath.save_game_folder}/items.json")):
+                and not os.path.exists(f"{GatoRobotoPath.save_game_folder()}/items.json")):
                 # print("Received Items JSON")
                 flag: bool = True
                 while len(ctx.checks_to_consume) > 0 and flag:
@@ -316,10 +314,10 @@ async def game_watcher(ctx: GatoRobotoContext):
                         
                         item_in_json: str = json.dumps(item_in, indent=4)
                 
-                        with open(f"{GatoRobotoPath.save_game_folder}/tmp_it.json", 'w') as f:
+                        with open(f"{GatoRobotoPath.save_game_folder()}/tmp_it.json", 'w') as f:
                             f.write(item_in_json)
                     
-                        os.rename(f"{GatoRobotoPath.save_game_folder}/tmp_it.json", f"{GatoRobotoPath.save_game_folder}/items.json")
+                        os.rename(f"{GatoRobotoPath.save_game_folder()}/tmp_it.json", f"{GatoRobotoPath.save_game_folder()}/items.json")
 
                         flag = False    
                         
@@ -349,8 +347,8 @@ async def process_gatoroboto_cmd(ctx: GatoRobotoContext, cmd: str, args: dict):
     
     if cmd == "Connected":
         # Do all file init here
-        if not os.path.exists(GatoRobotoPath.save_game_folder):
-            os.mkdir(GatoRobotoPath.save_game_folder)
+        if not os.path.exists(f"{GatoRobotoPath.save_game_folder()}"):
+            os.mkdir(f"{GatoRobotoPath.save_game_folder()}")
             
         id: str
         if "game_id" in args["slot_data"]:
@@ -361,8 +359,8 @@ async def process_gatoroboto_cmd(ctx: GatoRobotoContext, cmd: str, args: dict):
             
         ctx.game_id = id
             
-        if os.path.exists(f"{GatoRobotoPath.save_game_folder}/gameid.json"):
-            os.remove(f"{GatoRobotoPath.save_game_folder}/gameid.json")
+        if os.path.exists(f"{GatoRobotoPath.save_game_folder()}/gameid.json"):
+            os.remove(f"{GatoRobotoPath.save_game_folder()}/gameid.json")
             
         json_out: dict = {
             "game_id": id
@@ -370,10 +368,10 @@ async def process_gatoroboto_cmd(ctx: GatoRobotoContext, cmd: str, args: dict):
         
         item_in_json: str = json.dumps(json_out, indent=4)
         
-        with open(f"{GatoRobotoPath.save_game_folder}/tmp_id.json", 'w') as f:
+        with open(f"{GatoRobotoPath.save_game_folder()}/tmp_id.json", 'w') as f:
             f.write(item_in_json)
     
-        os.rename(f"{GatoRobotoPath.save_game_folder}/tmp_id.json", f"{GatoRobotoPath.save_game_folder}/gameid.json")
+        os.rename(f"{GatoRobotoPath.save_game_folder()}/tmp_id.json", f"{GatoRobotoPath.save_game_folder()}/gameid.json")
 
             
     if cmd == "ReceivedItems":
@@ -427,11 +425,11 @@ def launch():
     async def _main():
         ctx = GatoRobotoContext(None, None)
         
-        if os.path.exists(f"{GatoRobotoPath.save_game_folder}/item.json"):
-            os.remove(f"{GatoRobotoPath.save_game_folder}/item.json")
+        if os.path.exists(f"{GatoRobotoPath.save_game_folder()}/item.json"):
+            os.remove(f"{GatoRobotoPath.save_game_folder()}/item.json")
             
-        if os.path.exists(f"{GatoRobotoPath.save_game_folder}/gameid.json"):
-            os.remove(f"{GatoRobotoPath.save_game_folder}/gameid.json")
+        if os.path.exists(f"{GatoRobotoPath.save_game_folder()}/gameid.json"):
+            os.remove(f"{GatoRobotoPath.save_game_folder()}/gameid.json")
             
         ctx.server_task = asyncio.create_task(server_loop(ctx), name="server loop")
         asyncio.create_task(
