@@ -2,7 +2,7 @@
 
 ## v0.2.1
 
-## Bug Fixes
+### Bug Fixes
 - Fixed deprecated `@property` decorator causing client connection issues > Python 3.11.
 
 ## v0.2.0
